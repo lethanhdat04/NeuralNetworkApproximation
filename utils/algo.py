@@ -40,7 +40,7 @@ def optimal_approx(
         min_error = min(errors)
         prev_error_diff = max_error - min_error
 
-        for i in tqdm(range(1, n), desc="Optimal Approximation"):
+        for i in range(1, n):
             left_error = errors[i - 1]
             right_error = errors[i]
             x_common = intervals[i][0]  # common endpoint
@@ -73,3 +73,21 @@ def optimal_approx(
             break
 
     return intervals, errors, rounds
+
+def run_optimal_approximation(n, func, func_name, a, b, step, errs, get_derivative, mean_err, max_fx, min_fx):
+    for i in tqdm(n, desc=f"Optimal Approximation: {func_name}"):
+        print(f"n = {i}")
+        print(f"f(x) = {func_name}")
+        a, b = 0, 1
+        alpha = (b-a)**2 / (16 * i**2)
+        res = optimal_approx(i, func, a, b, step)
+        errs.append({
+            "function": func_name,
+            "n": i,
+            "mean_err": mean_err(res[1]),
+            "upper_bound": max_fx(get_derivative(get_derivative(func)), (a, b)) * alpha,
+            "lower_bound": min_fx(get_derivative(get_derivative(func)), (a, b)) * alpha,
+            "max_gap": max(res[1]) - min(res[1]),
+            "rounds": res[2]
+        })
+        print('-'*50)

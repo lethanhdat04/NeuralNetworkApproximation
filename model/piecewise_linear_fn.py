@@ -51,7 +51,7 @@ class ReluSegmentNetwork(nn.Module):
             x_i, x_next = self.x_points[i], self.x_points[i + 1]
             O_i = sign_k * F.relu(abs_k * (F.relu(x - x_i) - F.relu(x - x_next)))
             segment_outputs.append(O_i)
-        return base_value, segment_outputs
+        return base_value + sum(segment_outputs)
     
 
 class FixedWidthReluNetwork(nn.Module):

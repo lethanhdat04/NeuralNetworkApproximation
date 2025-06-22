@@ -1,52 +1,58 @@
+
 # Neural-Network-Approximation
 
-This project explores the theoretical and practical limits of approximating univariate convex functions using piecewise-linear neural networks (ReLU-based).
+This project explores the theoretical and practical limits of approximating **1D and 2D convex and non-convex functions** using **ReLU-based neural networks**. Inspired by recent theoretical work, we aim to evaluate and compare different architectures—including traditional dense models and Axon-style networks—for function approximation tasks.
 
 ---
 
 ## 🧠 Project Goals
 
-- Approximate convex functions using ReLU networks
-- Evaluate performance across different architectures
-- Compare with theoretical approximation bounds
-- Understand the limitations of classical neural regressors
+- Approximate **1D and 2D functions** \( f : [0,1] \rightarrow \mathbb{R} \) and \( f : [0,1]^2 \rightarrow \mathbb{R} \) using ReLU networks.
+- Focus on both **convex** and **non-convex** functions.
+- Compare traditional feedforward architectures with **Axon-style networks** (greedy layer growing).
+- Evaluate performance and convergence relative to **theoretical approximation bounds** (Liu & Liang 2021, Fokina & Oseledets 2023).
+- Understand the practical limitations of classical neural regressors when faced with complex geometries or higher dimensions.
 
 ---
 
-## 📁 Structure
+## 📁 Project Structure
 
 ```
 project/
-├── data/           # Data generators
-├── model/          # Network definitions (ReLU, piecewise, etc.)
-├── utils/          # Training, evaluation, visualizers
-├── tests/          # Unit tests for CI/CD
-├── experiments/    # Main notebook with theory & results
-├── .gitlab-ci.yml  # GitLab Actions CI
-├── setup.py        # Python-based environment setup
+├── data/           # Data generators for 1D and 2D test functions
+├── model/          # Network definitions (ReLU, piecewise-linear, Axon-style, etc.)
+├── utils/          # Training loop, evaluation, and visualization tools
+├── tests/          # Unit tests for core components
+├── experiments/    # Jupyter notebooks with results and analysis
+├── .gitlab-ci.yml  # GitLab CI/CD configuration
+├── setup.py        # Project environment setup
 ├── requirements.txt
 ├── README.md
 ```
 
 ---
 
-## ⚙️ Setup
+## ⚙️ Installation & Setup
+
+Create and activate the Python virtual environment:
 
 ```bash
 python setup.py
-```
-
-Then activate virtual environment and launch:
-
-```bash
 source .venv/bin/activate      # Linux/macOS
 .venv\Scripts\activate.bat     # Windows
+```
+
+Then launch Jupyter notebooks for experiments:
+
+```bash
 jupyter notebook
 ```
 
 ---
 
-## ✅ Run Unit Tests
+## ✅ Running Unit Tests
+
+Ensure everything works correctly with:
 
 ```bash
 pytest tests/
@@ -56,4 +62,12 @@ pytest tests/
 
 ## 📌 CI/CD
 
-GitLab Actions automatically runs tests on push/pull. See `.gitlab-ci.yml`.
+GitLab CI/CD automatically runs all tests on push and merge requests via `.gitlab-ci.yml`.
+
+---
+
+## 📚 References
+
+1. **Liu, B., Liang, Y.** (2021). *Optimal Function Approximation with ReLU Neural Networks*, Neurocomputing, Vol. 435.  
+2. **Fokina, D., Oseledets, I.** (2023). *Growing Axons: Greedy Learning of Neural Networks with Application to Function Approximation*, Russian Journal of Numerical Analysis and Mathematical Modelling.  
+3. GitHub (Axon algorithm implementation): [https://github.com/dashafok/axon-approximation](https://github.com/dashafok/axon-approximation)
