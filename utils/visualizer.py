@@ -60,3 +60,29 @@ def plot_results_1d(X_train, y_train, X_test, y_test, y_pred,
             print('Plot displayed in non-interactive mode. Saving to file instead. Please provide a save_path.')
 
     plt.close()
+
+def plot_approximations(xs, ys, approx_axon, approx_relu, func_label="f(x)"):
+    plt.figure(figsize=(12, 5))
+
+    # Axon plot
+    plt.subplot(1, 2, 1)
+    plt.plot(xs, ys, label=f'Target: ${func_label}$')
+    plt.plot(xs, approx_axon, '--', label='Axon Approximation')
+    plt.title("Axon Approximation")
+    plt.xlabel("x")
+    plt.ylabel("f(x)")
+    plt.legend()
+    plt.grid(True)
+
+    # ReLU network plot
+    plt.subplot(1, 2, 2)
+    plt.plot(xs, ys, label=f'Target: ${func_label}$')
+    plt.plot(xs, approx_relu, '--', label='ReLU Network')
+    plt.title("Traditional ReLU Network")
+    plt.xlabel("x")
+    plt.ylabel("f(x)")
+    plt.legend()
+    plt.grid(True)
+
+    plt.tight_layout()
+    plt.show()

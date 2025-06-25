@@ -1,6 +1,10 @@
 from typing import Callable, List, Tuple
 from utils.maths import compute_approximation_error
 from tqdm.auto import tqdm
+import numpy as np
+from model.axon_approximation import axon_algorithm
+from model.piecewise_linear_fn import ReluSegmentNetwork
+import torch
 
 def optimal_approx(
     n: int,
@@ -91,3 +95,23 @@ def run_optimal_approximation(n, func, func_name, a, b, step, errs, get_derivati
             "rounds": res[2]
         })
         print('-'*50)
+
+def compute_approximations(target_function, domain=(0,1), num_samples=1000, relu_range=(0,1), relu_num_points=20, axon_K=100):
+    # Input data
+    xs = np.linspace(domain[0], domain[1], num_samples)[:, None]
+    ys = target_function(xs).flatten()
+
+    # Axon Approximation
+    bs, bs_coefs, r, coefs, norms, errs = axon_algorithm(xs, ys, K=axon_K)
+    approx_axon = bs @ (bs.T @ ys)
+
+    # ReLU Network
+    x_points = np.linspace(relu_range[0], relu_range[1], relu_num_points)
+    y_points = target_function(x_points)
+    model_relu = ReluSegmentNetwork(x_points, y_points)
+
+    x_tensor = torch.tensor(xs.flatten(), dtype=torch.float32)
+    with torch.no_grad():
+        approx_relu = model_relu(x_tensor).numpy()
+
+    return xs, ys, approx_axon, approx_relu
